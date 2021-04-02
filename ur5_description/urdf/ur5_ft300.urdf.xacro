@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<robot name="ridgeback" xmlns:xacro="http://ros.org/wiki/xacro">
+<robot name="ur5" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:property name="PI" value="3.1415926535897931" />
 
   <xacro:property name="deck_height" value="0.280" />
