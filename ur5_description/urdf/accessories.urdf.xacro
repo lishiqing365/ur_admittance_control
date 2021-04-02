@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <!--
+    As you add to this URDF, please be aware that both the robot and
+    simulation include it. You must retain compatibility with all of
+    the following launch files:
+
+    ridgeback_viz/launch/view_model.launch
+    ridgeback_gazebo/launch/ridgeback_world.launch
+    ridgeback_base/launch/base.launch
+  -->
+
+  <xacro:include filename="$(find ur_description)/urdf/ur5.urdf.xacro" />
+
+<!-- Spawn arm -->
+  <xacro:arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface"/>
+  <xacro:arg name="kinematics_config" default="$(find ur_description)/config/ur5_default.yaml"/>
+  <xacro:ur5_robot prefix="ur5_arm_" joint_limited="true"
+    transmission_hw_interface="$(arg transmission_hw_interface)"
+    kinematics_file="${load_yaml('$(arg kinematics_config)')}" />
+
+  <!-- Join arm -->
+  <joint name="ur5_arm_base" type="fixed">
+	<parent link="mid_mount" />
+	<child link="ur5_arm_base_link" />
+	<origin xyz="0 0.0 0.0" rpy="0.0 0.0 -1.5708" />
+  </joint>
+
+  <!-- Sensor Mount and other custom parts -->
+  <link name="FT300_link">
+		<visual>
+			<geometry>
+				<cylinder length="0.04" radius="0.035"/>
+			</geometry>
+			<material name="black"/>
+		</visual>
+
+		<collision>
+			<geometry>
+				<cylinder length="0.04" radius="0.035"/>
+			</geometry>
+		</collision>
+   </link>
+
+  <joint name="FT300_joint" type="fixed">
+	  <origin xyz="0.02 0 0" rpy="0 1.57 0" />
+	  <parent link="ur5_arm_ee_link" />
+	  <child link="FT300_link" />
+  </joint>
+
+
+</robot>
